@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>나인 투 식스 | 실제 이미지 PNG 복사</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f5f6;color:#222c35;font:15px/1.7 "Malgun Gothic",system-ui,sans-serif}
+main{max-width:740px;margin:0 auto;padding:24px 16px 50px}h1{font-size:24px;line-height:1.5;margin:0 0 10px}
+.lead{font-size:14px;color:#627184;margin:0 0 22px}
+.card{background:white;border:1px solid #dce2e7;padding:18px;margin:14px 0;border-radius:9px}
+h2{font-size:17px;margin:0 0 10px}img{display:block;max-width:100%;max-height:400px;object-fit:contain;margin:14px auto;border-radius:5px}
+button{border:0;background:#185a42;color:white;font-weight:700;border-radius:6px;padding:12px 18px;cursor:pointer;font-size:15px}
+button:disabled{background:#9ba5ab;cursor:not-allowed}.state{font-size:13px;margin:10px 0;color:#76644d}
+.state.good{color:#176744}.state.bad{color:#a03939}#paste{background:white;border:2px dashed #9daebc;padding:17px;min-height:90px;border-radius:7px;outline-offset:3px}
+#paste img{max-width:100%;max-height:180px}.tip{font-size:13px;color:#616d7a}
+</style></head><body><main>
+<h1>나인 투 식스 — 이미지 자체 복사</h1>
+<p class="lead">사진은 이 페이지와 같은 GitHub Pages 폴더에 보관된 실제 JPG 파일이야. 브라우저가 PNG를 미리 준비한 뒤 버튼을 활성화해. 주소만 복사하는 기능은 넣지 않았어.</p>
+<div id="cards"></div>
+<h2>붙여넣기 확인</h2><p class="tip">위 복사 버튼 클릭 후 아래 빈칸을 클릭하고 Ctrl+V를 눌러. 사진이 보이면 실제 이미지가 복사된 거야. 기존 텍스트가 보인다면 실패한 거고.</p>
+<div id="paste" contenteditable="true" aria-label="이미지 붙여넣기 테스트">여기를 클릭하고 Ctrl+V</div>
+<p id="paste-status" class="tip"></p>
+</main><script>
+"use strict";
+const pics=[["01_still.jpg","나인 투 식스 캐릭터 포스터"],["02_still.jpg","박민영 드라마 스틸"],["03_still.jpg","고수 드라마 스틸"]];
+const images=[];
+const panel=document.getElementById("cards");
+pics.forEach(([url,name],i)=>{const card=document.createElement("section");card.className="card";card.innerHTML='<h2>사진 '+(i+1)+' · '+name+'</h2><img src="'+url+'" alt="'+name+'"><p class="state" id="state-'+i+'">PNG 이미지 준비 중…</p><button id="btn-'+i+'" disabled>이미지 준비 중</button>';panel.appendChild(card);card.querySelector("button").addEventListener("click",()=>copyPic(i));});
+function report(i,t,ok){const el=document.getElementById("state-"+i);el.textContent=t;el.className="state "+(ok?"good":"bad");}
+async function convertToPng(blob){const bitmap=await createImageBitmap(blob);try{const c=document.createElement("canvas");c.width=bitmap.width;c.height=bitmap.height;c.getContext("2d").drawImage(bitmap,0,0);const png=await new Promise((r,j)=>c.toBlob(b=>b?r(b):j(new Error("PNG 변환 실패")),"image/png"));if(png.type!=="image/png"||png.size<100)throw Error("PNG 크기 오류");return png}finally{bitmap.close?.()}}
+async function preload(i){try{const response=await fetch(pics[i][0],{cache:"force-cache"});if(!response.ok)throw Error("HTTP "+response.status);const png=await convertToPng(await response.blob());images[i]=png;const btn=document.getElementById("btn-"+i);btn.disabled=false;btn.textContent="이미지 자체 복사";report(i,"PNG 준비 완료 · "+Math.ceil(png.size/1024)+"KB",true)}catch(e){report(i,"준비 실패: "+e.message+" · 사진 위에서 마우스 오른쪽 클릭 → 이미지 복사",false)}}
+async function copyPic(i){const png=images[i];if(!png){report(i,"이미지 데이터 미준비",false);return}if(!isSecureContext||!navigator.clipboard?.write||!window.ClipboardItem){report(i,"클립보드 API 차단: 크롬에서 HTTPS 주소로 열고 권한 확인",false);return}const btn=document.getElementById("btn-"+i);btn.disabled=true;btn.textContent="복사 중…";try{const task=navigator.clipboard.write([new ClipboardItem({"image/png":png})]);await task;let msg="PNG 이미지 쓰기 성공 · 아래 Ctrl+V로 실제 붙여넣기 확인",verified=false;try{const items=await navigator.clipboard.read();for(const item of items){if(item.types.includes("image/png")){const b=await item.getType("image/png");if(b.size>100)verified=true}}msg=verified?"클립보드에 PNG 이미지 기록 확인! 아래에 Ctrl+V":"쓰기 완료 / 읽기 결과에서 PNG 미확인. Ctrl+V로 확인";}catch(e){msg="PNG 쓰기 성공 / 읽기 권한이 없어 재확인은 제한됨. 아래 Ctrl+V로 확인";}report(i,msg,verified)}catch(e){report(i,"복사 실패: "+e.name+" — "+e.message+" · 기존 클립보드 내용은 유지됨",false)}finally{btn.disabled=false;btn.textContent="이미지 자체 복사"}}
+document.getElementById("paste").addEventListener("paste",e=>{const files=Array.from(e.clipboardData?.items||[]).filter(x=>x.type.startsWith("image/"));document.getElementById("paste-status").textContent=files.length?"붙여넣은 클립보드에 이미지 데이터 "+files[0].type+" 확인됨":"붙여넣은 클립보드에 이미지 데이터가 없음. 기존 복사 내용일 수 있어.";});
+pics.forEach((_,i)=>preload(i));
+</script></body></html>
