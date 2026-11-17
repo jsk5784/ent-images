@@ -13,6 +13,8 @@
   .tip { font-size: 13px; color: #666; line-height: 1.6; }
   .item { border-top: 1px solid #eee; padding: 12px 0; }
   .item img { max-width: 100%; max-height: 240px; display: block; margin: 6px 0; }
+  .preview-only { text-align: center; margin: 6px 0 12px; }
+  .preview-only img { max-width: 100%; border-radius: 6px; }
 </style></head><body>
 <div class="box tip">
   1) 제목 복사 → 네이버 제목 칸에 붙여넣기<br>
@@ -28,18 +30,14 @@
 <div class="box"><div class="head"><h2>본문</h2><button data-target="body">본문 복사</button></div>
   <div id="body">
 <p style="text-align:center;background:#e3f0ff;padding:10px">📷 사진 1 자리</p>
+<div class="preview-only"><img src="01_image.jpg" alt=""><div class="tip">미리보기 · 아래 [사진 1]의 이미지 복사로 이 자리에 넣기</div></div>
 <p style="text-align:center"><span style="color:#888;font-size:13px">▲ 겨울철 행정복지센터 상담 장면 · AI 생성 이미지</span></p>
 <p>갑자기 형편이 어려워진 가구에 현장에서 30만 원을 먼저 주는 '우선 긴급지원'이 생겨요. 보건복지부가 10일 국무회의에 보고한 겨울철 취약계층 보호 대책에 들어 있어요. 다만 시작은 2027년 1월이고 누구나 받는 지원금도 아니에요.</p>
 <p><br></p>
 <blockquote style="border-left:4px solid #333;margin:16px 0;padding:2px 0 2px 14px"><p><span style="font-size:19px">30만 원, 누구에게 언제부터</span></p></blockquote>
 <p>대상은 당장 도움이 필요한 위기 상황이에요. 복지부는 분유나 기저귀 같은 생필품을 살 수 없는 경우, 월세가 밀려 집에서 나가야 할 날이 임박한 경우를 예로 들었어요.</p>
 <p>이런 상황이라고 현장에서 판단하면 정식 심사를 다 거치기 전에 30만 원을 먼저 지원해요. 신청만 하면 똑같이 받는 돈이 아니라 담당 공무원의 현장 판단이 들어가는 구조예요.</p>
-<p>| 구분 | 내용 |</p>
-<p>|---|---|</p>
-<p>| 시작 | 2027년 1월 |</p>
-<p>| 금액 | 30만 원 우선 지원 |</p>
-<p>| 예시 상황 | 생필품 구입 불가, 월세 체납으로 퇴거 임박 |</p>
-<p>| 결정 | 현장 재량 판단 |</p>
+<table style="border-collapse:collapse;width:100%;margin:12px 0;font-size:15px"><tr><th style="border:1px solid #d5dbe1;background:#eef3f8;padding:10px 14px;font-weight:bold;text-align:center;white-space:nowrap">구분</th><th style="border:1px solid #d5dbe1;background:#eef3f8;padding:10px 14px;font-weight:bold;text-align:center;white-space:nowrap">내용</th></tr><tr><td style="border:1px solid #d5dbe1;padding:10px 14px;background:#f7f9fb;font-weight:bold;white-space:nowrap">시작</td><td style="border:1px solid #d5dbe1;padding:10px 14px">2027년 1월</td></tr><tr><td style="border:1px solid #d5dbe1;padding:10px 14px;background:#f7f9fb;font-weight:bold;white-space:nowrap">금액</td><td style="border:1px solid #d5dbe1;padding:10px 14px">30만 원 우선 지원</td></tr><tr><td style="border:1px solid #d5dbe1;padding:10px 14px;background:#f7f9fb;font-weight:bold;white-space:nowrap">예시 상황</td><td style="border:1px solid #d5dbe1;padding:10px 14px">생필품 구입 불가, 월세 체납으로 퇴거 임박</td></tr><tr><td style="border:1px solid #d5dbe1;padding:10px 14px;background:#f7f9fb;font-weight:bold;white-space:nowrap">결정</td><td style="border:1px solid #d5dbe1;padding:10px 14px">현장 재량 판단</td></tr></table>
 <p><br></p>
 <blockquote style="border-left:4px solid #333;margin:16px 0;padding:2px 0 2px 14px"><p><span style="font-size:19px">지금 급하면 기다려야 할까</span></p></blockquote>
 <p>아니에요. 30만 원 우선 지원이 1월부터일 뿐, 기존 긴급복지지원 제도는 지금도 있어요. 갑작스러운 위기로 생계가 어려워진 저소득층에 생계비 등을 지원하고 겨울에는 월 15만 원의 연료비도 더해 줘요.</p>
@@ -91,12 +89,17 @@ document.querySelectorAll("button").forEach(btn => btn.addEventListener("click",
     document.execCommand("copy");
     ta.remove();
   } else {
+    // 미리보기 사진은 복사에서 뺀다(네이버는 붙여넣은 바깥 사진을 발행 때 버린다)
+    const hidden = [...el.querySelectorAll(".preview-only")].map(p => {
+      const mark = document.createComment("preview"); p.replaceWith(mark); return [mark, p];
+    });
     const range = document.createRange();
     range.selectNodeContents(el);
     const sel = window.getSelection();
     sel.removeAllRanges(); sel.addRange(range);
     document.execCommand("copy");
     sel.removeAllRanges();
+    hidden.forEach(([mark, p]) => mark.replaceWith(p));
   }
   const label = btn.textContent;
   btn.textContent = "복사됨 ✓"; btn.classList.add("done");

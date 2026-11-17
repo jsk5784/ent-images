@@ -13,6 +13,8 @@
   .tip { font-size: 13px; color: #666; line-height: 1.6; }
   .item { border-top: 1px solid #eee; padding: 12px 0; }
   .item img { max-width: 100%; max-height: 240px; display: block; margin: 6px 0; }
+  .preview-only { text-align: center; margin: 6px 0 12px; }
+  .preview-only img { max-width: 100%; border-radius: 6px; }
 </style></head><body>
 <div class="box tip">
   1) 제목 복사 → 네이버 제목 칸에 붙여넣기<br>
@@ -28,6 +30,7 @@
 <div class="box"><div class="head"><h2>본문</h2><button data-target="body">본문 복사</button></div>
   <div id="body">
 <p style="text-align:center;background:#e3f0ff;padding:10px">📷 사진 1 자리</p>
+<div class="preview-only"><img src="01_photo.jpg" alt=""><div class="tip">미리보기 · 아래 [사진 1]의 이미지 복사로 이 자리에 넣기</div></div>
 <p style="text-align:center"><span style="color:#888;font-size:13px">▲ 보이저 탐사선 상상도 · 사진: NASA/JPL / 퍼블릭 도메인 / 위키미디어 공용</span></p>
 <p>1977년에 떠난 NASA의 보이저 1호가 지구에서 '1광일' 떨어진 곳에 닿아요. 사람이 만든 물체로는 처음이에요. NASA는 이를 기념해 전 세계 사람들에게 오늘 해가 진 뒤 하늘을 향해 불빛 신호를 보내 달라고 했어요.</p>
 <p><br></p>
@@ -37,15 +40,11 @@
 <p><br></p>
 <blockquote style="border-left:4px solid #333;margin:16px 0;padding:2px 0 2px 14px"><p><span style="font-size:19px">1광일은 얼마나 멀까</span></p></blockquote>
 <p>1광일은 시간이 아니라 거리예요. 초속 약 30만 km로 달리는 빛이 하루 동안 가는 거리죠. 계산하면 약 259억 km이고 지구와 태양 사이 거리의 약 173배예요.</p>
-<p>| 구분 | 내용 |</p>
-<p>|---|---|</p>
-<p>| 1광일 거리 | 약 259억 km(약 161억 마일) |</p>
-<p>| 지구-태양 거리와 비교 | 약 173배 |</p>
-<p>| 지구에서 보낸 명령이 닿는 데 | 약 24시간 |</p>
-<p>| 답이 돌아오기까지 | 약 48시간 |</p>
+<table style="border-collapse:collapse;width:100%;margin:12px 0;font-size:15px"><tr><th style="border:1px solid #d5dbe1;background:#eef3f8;padding:10px 14px;font-weight:bold;text-align:center;white-space:nowrap">구분</th><th style="border:1px solid #d5dbe1;background:#eef3f8;padding:10px 14px;font-weight:bold;text-align:center;white-space:nowrap">내용</th></tr><tr><td style="border:1px solid #d5dbe1;padding:10px 14px;background:#f7f9fb;font-weight:bold;white-space:nowrap">1광일 거리</td><td style="border:1px solid #d5dbe1;padding:10px 14px">약 259억 km(약 161억 마일)</td></tr><tr><td style="border:1px solid #d5dbe1;padding:10px 14px;background:#f7f9fb;font-weight:bold;white-space:nowrap">지구-태양 거리와 비교</td><td style="border:1px solid #d5dbe1;padding:10px 14px">약 173배</td></tr><tr><td style="border:1px solid #d5dbe1;padding:10px 14px;background:#f7f9fb;font-weight:bold;white-space:nowrap">지구에서 보낸 명령이 닿는 데</td><td style="border:1px solid #d5dbe1;padding:10px 14px">약 24시간</td></tr><tr><td style="border:1px solid #d5dbe1;padding:10px 14px;background:#f7f9fb;font-weight:bold;white-space:nowrap">답이 돌아오기까지</td><td style="border:1px solid #d5dbe1;padding:10px 14px">약 48시간</td></tr></table>
 <p>통신은 빛과 같은 속도의 전파로 해요. 그래서 이제 관제팀이 보낸 명령은 하루 뒤에 도착하고 보이저 1호의 답을 받으려면 꼬박 이틀을 기다려야 해요.</p>
 <p>보이저 1호는 목성과 토성을 지나며 사진과 자료를 보냈고 2012년에는 태양의 영향권을 벗어나 성간 공간에 들어간 첫 인공물이 됐어요. 50년 가까운 비행으로 관측 장비는 대부분 멈췄고 NASA는 2035년쯤이면 지구와의 통신이 어려워질 것으로 보고 있어요.</p>
 <p style="text-align:center;background:#e3f0ff;padding:10px">📷 사진 2 자리</p>
+<div class="preview-only"><img src="02_photo.jpg" alt=""><div class="tip">미리보기 · 아래 [사진 2]의 이미지 복사로 이 자리에 넣기</div></div>
 <p style="text-align:center"><span style="color:#888;font-size:13px">▲ 보이저 1·2호에 실린 &#x27;골든 레코드&#x27; 덮개 · 사진: NASA/JPL / 퍼블릭 도메인 / 위키미디어 공용</span></p>
 <p><br></p>
 <blockquote style="border-left:4px solid #333;margin:16px 0;padding:2px 0 2px 14px"><p><span style="font-size:19px">오늘 밤 'V-G-R' 신호 보내는 법</span></p></blockquote>
@@ -94,12 +93,17 @@ document.querySelectorAll("button").forEach(btn => btn.addEventListener("click",
     document.execCommand("copy");
     ta.remove();
   } else {
+    // 미리보기 사진은 복사에서 뺀다(네이버는 붙여넣은 바깥 사진을 발행 때 버린다)
+    const hidden = [...el.querySelectorAll(".preview-only")].map(p => {
+      const mark = document.createComment("preview"); p.replaceWith(mark); return [mark, p];
+    });
     const range = document.createRange();
     range.selectNodeContents(el);
     const sel = window.getSelection();
     sel.removeAllRanges(); sel.addRange(range);
     document.execCommand("copy");
     sel.removeAllRanges();
+    hidden.forEach(([mark, p]) => mark.replaceWith(p));
   }
   const label = btn.textContent;
   btn.textContent = "복사됨 ✓"; btn.classList.add("done");
